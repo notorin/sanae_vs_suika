@@ -53,7 +53,7 @@ phina.define('Player', {
     }
   },
   isHit: function(enemy) {
-    let isHit = enemy.life && (enemy.x - this.x) ** 2 + (enemy.y - this.y) ** 2 < (enemy.radius + this.radius) ** 2;
+    let isHit = (enemy.life > 0) && (enemy.x - this.x) ** 2 + (enemy.y - this.y) ** 2 < (enemy.radius + this.radius) ** 2;
     //ゲームオーバー時アニメ
     if (isHit) this.tweener.clear().set({x: this.prex, frameIndex: 3})
                                    .by( {x:  5}, 100)
@@ -84,7 +84,7 @@ phina.define('Bullet', {
     if (this.x > SCREEN_X || this.y > SCREEN_Y || this.y < 0) this.remove();
   },
   isHit: function(enemy) {
-    return enemy.life && (enemy.x - this.x) ** 2 + (enemy.y - this.y) ** 2 < (enemy.radius + this.radius) ** 2
+    return (enemy.life > 0) && (enemy.x - this.x) ** 2 + (enemy.y - this.y) ** 2 < (enemy.radius + this.radius) ** 2
   },
 });
 
@@ -113,7 +113,7 @@ phina.define('Enemy', {
     this.life -= type ? 5 : 1;
     //破壊時
     if (this.life <= 0) {
-      this.anim.remove();
+      this.anim.gotoAndStop();
       this.setImage('suika', 32, 64);
       this.frameIndex = 0;
       this.x -= 16;
