@@ -18,7 +18,7 @@ const ASSETS = {
     'music': './sounds/Bgm.mp3',
   },*/
   font: {
-    'FAMania': './fonts/FAMania2.6.ttf'
+    'FAMania': './fonts/FAMania2.6.woff'
   },
 }
   
