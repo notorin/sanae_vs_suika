@@ -46,6 +46,9 @@ phina.define('ResultScene', {
     this.back.setPosition(SCREEN_X / 3, SCREEN_Y * 5 / 4);
     this.back.tweener.wait(1000).moveTo(SCREEN_X / 3, SCREEN_Y * 3 / 4, 400).play();
     this.back.onpointend = () => {
+      this.score.remove();
+      this.player.remove();
+      this.gameManager.remove();
       this.exit();
     };
   },

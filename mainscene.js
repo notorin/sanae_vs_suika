@@ -6,7 +6,7 @@ phina.define('MainScene', {
       // 背景色を指定
       this.backgroundColor = 'rgb(204, 195, 161)';
       this.score = Score();
-      this.player = Player(this.score).addChildTo(this);
+      this.player = Player().addChildTo(this);
       this.player.setPosition(SCREEN_X / 4, SCREEN_Y / 2);
       this.gameManager = GameManager(this.player, this.score).addChildTo(this);
       this.score.addChildTo(this);

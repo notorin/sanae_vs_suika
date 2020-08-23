@@ -34,6 +34,8 @@ phina.define('TitleScene', {
     }).addChildTo(this);
     this.start.setInteractive(true);
     this.start.setPosition(SCREEN_X / 2, SCREEN_Y * 3 / 5);
+    this.start.width = this.start.calcCanvasWidth();
+    this.start.height = this.start.calcCanvasHeight();
     // onclickじゃないとあかんのか？
     this.start.onclick = () => {
       //モバイル端末での音声再生のためにcontextを出し入れする必要があるらしい
