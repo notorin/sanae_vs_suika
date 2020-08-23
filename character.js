@@ -7,6 +7,21 @@ phina.define('Player', {
     this.holdTimer = 0;
     this.radius = 32;
     this.isGameover = false;
+    this.chargeBox = Shape({
+      x: -64,
+      width: 8,
+      height: 96,
+      backgroundColor: 'black'
+    }).addChildTo(this);
+    this.chargeBar = Shape({
+      x: -64,
+      y: 56,
+      width: 8,
+      height: 96,
+      backgroundColor: 'yellow'
+    }).addChildTo(this);
+    this.chargeBar.origin.set(0.5, 1);
+    this.chargeBar.alpha = 0;
   },
 
   setPosition: function(x, y) {
@@ -31,6 +46,7 @@ phina.define('Player', {
 
     //マウスを押した瞬間
     if (p.getPointingStart()) {
+      this.chargeBar.alpha = 1;
       //溜めてるアニメーション
       this.frameIndex = 1;
       this.tweener.clear().by( {x:  5}, 100)
@@ -40,6 +56,7 @@ phina.define('Player', {
     }
     //マウスを放した瞬間、ショットの生成
     if (p.getPointingEnd()) {
+      this.chargeBar.alpha = 0;
       //撃ってるアニメーション
       this.frameIndex = 2;
       this.tweener.clear().set({x: this.prex})
@@ -51,13 +68,20 @@ phina.define('Player', {
       let type = (this.holdTimer === 0) ? 1 : 0;
       Bullet(this.x, this.y, Math.radToDeg(rad), type).addChildTo(this.bullets);
     }
+    //チャージバーの更新
+    this.chargeBar.height = (16-this.holdTimer) * 96 / 16;
+    this.chargeBar.backgroundColor = !this.holdTimer ?  'red' : 'yellow';
   },
   isHit: function(enemy) {
     let isHit = (enemy.life > 0) && (enemy.x - this.x) ** 2 + (enemy.y - this.y) ** 2 < (enemy.radius + this.radius) ** 2;
     //ゲームオーバー時アニメ
-    if (isHit) this.tweener.clear().set({x: this.prex, frameIndex: 3})
-                                   .by( {x:  5}, 100)
-                                   .by( {x: -5}, 100).setLoop(true).play();
+    if (isHit) {
+      this.tweener.clear().set({x: this.prex, frameIndex: 3})
+                          .by( {x:  5}, 100)
+                          .by( {x: -5}, 100).setLoop(true).play();
+      this.chargeBar.remove();
+      this.chargeBox.remove();
+    }
     return isHit;
   }
 });
