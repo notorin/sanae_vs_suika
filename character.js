@@ -87,18 +87,20 @@ phina.define('Player', {
 });
 
 phina.define('Bullet', {
-  superClass:'Shape',
+  superClass:'Sprite',
   init: function(x, y, deg, type) {
-    this.superInit();
+    this.superInit('bullet', 32, 8);
     this.setPosition(x, y);
-    this.setSize(32, 8);
-    this.radius = 4;
     this.setRotation(deg);
+    this.setScale(2.0, 2.0);
     //type => 0:normal bullet 1:Pierce bullet
     this.type = type
     this.v =  type ? 25 : 20;
     this.score = type ? 100 : 20;
-    this.backgroundColor = type ? 'red': 'yellow';
+    if (type === 1)
+      this.anim = FrameAnimation('bullet_ss').attachTo(this).gotoAndPlay('pierce');
+    else
+      this.frameIndex = 0;
   },
   update: function() {
     //角度方向に直進
